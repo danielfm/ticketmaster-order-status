@@ -1,0 +1,23 @@
+ticketmaster-order-status
+-------------------------
+
+by Daniel F. Martins <daniel.tritone at gmail dot com>
+
+
+Command-line tool written in Python that displays on your Linux desktop the
+status of your orders on the brazilian Ticketmaster website.
+
+Depends on pynotify, a Python binding for libnotify.
+
+
+Usage
+-----
+
+Displays the supported options:
+
+    $ python ticketmaster_order_status.py
+
+
+Checks the status of the orders 1 and 2:
+
+    $ python ticketmaster_order_status.py -e your@email.com -p password -o 1,2
