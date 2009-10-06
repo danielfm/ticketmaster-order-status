@@ -64,8 +64,6 @@ _STATUS_CODES = {
 }
 
 
-
-
 def display_message(title, message, priority=_PRIORITY_CRITICAL):
     """
     Displays a message on the user's desktop using libnotify-python.
