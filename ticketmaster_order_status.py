@@ -64,14 +64,22 @@ _STATUS_CODES = {
 }
 
 
+def initialize_notification_system(app_title):
+    """
+    Initializes the notification machinery.
+    """
+    if not pynotify.init(app_title):
+        import sys
+        sys.exit(1)
+
+
 def display_message(title, message, priority=_PRIORITY_CRITICAL):
     """
     Displays a message on the user's desktop using libnotify-python.
     """
-    if pynotify.init(title):
-        n = pynotify.Notification(title, message)
-        n.set_urgency(priority)
-        n.show()
+    message = pynotify.Notification(title, message)
+    message.set_urgency(priority)
+    message.show()
 
 
 def check_orders(email, password, order_ids):
@@ -145,6 +153,7 @@ def main():
         # Parse the order ids
         order_ids = map(lambda s: s.strip(), options.order_ids.split(','))
 
+        initialize_notification_system("Ticketmaster Order Status")
         check_orders(options.email, options.password, order_ids)
 
 
