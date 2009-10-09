@@ -32,7 +32,6 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 
-import optparse
 import urllib
 import urllib2
 import pynotify
@@ -46,7 +45,7 @@ _LOGIN_URI = '%s/shwLogin.cfm' % _BASE_URL
 _ORDER_URI = '%s/shwCompraDetalhe.cfm?pedidoID=%%s' % _BASE_URL
 
 # Order list link
-_ORDERS_LINK = '<a href="%s">More</a>' % _LOGIN_URI
+_ORDERS_LINK = '<a href="%s">More...</a>' % _LOGIN_URI
 
 # Notification priorities
 _PRIORITY_LOW      = pynotify.URGENCY_LOW
@@ -93,7 +92,7 @@ def check_orders(email, password, order_ids):
             for order_id in order_ids:
                 show_order_status(opener, order_id)
         except:
-            display_message(_NOTIFICATION_TITLE % order_id, 'Cannot check order status')
+            display_message(_NOTIFICATION_TITLE % order_id, 'Cannot check status')
     except:
         display_message('Ticketmaster', 'Cannot log into Ticketmaster')
 
@@ -115,8 +114,6 @@ def show_order_status(opener, order_id):
     """
     Shows the current status of your orders.
     """
-    status_found = False
-
     # Request the order status page
     response = opener.open(_ORDER_URI % order_id)
     content = response.read()
@@ -127,18 +124,16 @@ def show_order_status(opener, order_id):
             title = _NOTIFICATION_TITLE % order_id
             message = '%s. %s' % (value[0], _ORDERS_LINK)
             display_message(title, message, value[1])
-
-            status_found = True
             break
-
-    if not status_found:
-        display_message(_NOTIFICATION_TITLE % order_id, 'Order status not found')
+    else:
+        display_message(_NOTIFICATION_TITLE % order_id, 'Status not found')
 
 
 def main():
     """
     Main function.
     """
+    import optparse
     p = optparse.OptionParser()
 
     # Required command line options
