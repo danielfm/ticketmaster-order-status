@@ -94,7 +94,7 @@ def check_orders(email, password, order_ids):
         except:
             display_message(_NOTIFICATION_TITLE % order_id, 'Cannot check status')
     except:
-        display_message('Ticketmaster', 'Cannot log into Ticketmaster')
+        display_message('Ticketmaster', 'Login failed')
 
 
 def login(opener, email, password):
