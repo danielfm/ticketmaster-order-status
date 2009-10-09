@@ -56,11 +56,11 @@ _PRIORITY_CRITICAL = pynotify.URGENCY_CRITICAL
 # Notification messages to display according to the orders status
 _NOTIFICATION_TITLE = 'Ticketmaster Order %s'
 _STATUS_CODES = {
-    'Livre'      : ('Order not processed yet', _PRIORITY_LOW),
+    'Livre'      : ('Not processed yet'      , _PRIORITY_LOW),
     'StdReserva' : ('Reserving your tickets' , _PRIORITY_NORMAL),
     'StdCobranca': ('Charging your tickets'  , _PRIORITY_NORMAL),
-    'VendaOk'    : ('Order billed'           , _PRIORITY_NORMAL),
-    'Recusada'   : ('Order rejected'         , _PRIORITY_CRITICAL)
+    'VendaOk'    : ('Billed'                 , _PRIORITY_CRITICAL),
+    'Recusada'   : ('Rejected'               , _PRIORITY_CRITICAL)
 }
 
 
