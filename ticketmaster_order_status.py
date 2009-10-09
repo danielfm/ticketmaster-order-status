@@ -92,7 +92,8 @@ def check_orders(email, password, order_ids):
             for order_id in order_ids:
                 show_order_status(opener, order_id)
         except:
-            display_message(_NOTIFICATION_TITLE % order_id, 'Cannot check status')
+            title = _NOTIFICATION_TITLE % order_id
+            display_message(title, 'Cannot check status')
     except:
         display_message('Ticketmaster', 'Login failed')
 
@@ -137,9 +138,12 @@ def main():
     p = optparse.OptionParser()
 
     # Required command line options
-    p.add_option('--email'    , '-e', help='E-mail address used in your Ticketmaster credentials.')
-    p.add_option('--password' , '-p', help='Password used in your Ticketmaster credentials.')
-    p.add_option('--order-ids', '-o', help='Order IDs to be checked, separated by collons.')
+    p.add_option('--email'    , '-e', \
+        help='E-mail address used in your Ticketmaster credentials.')
+    p.add_option('--password' , '-p', \
+        help='Password used in your Ticketmaster credentials.')
+    p.add_option('--order-ids', '-o', \
+        help='Order IDs to be checked, separated by collons.')
 
     options = p.parse_args()[0]
     if not options.email or not options.password or not options.order_ids:
