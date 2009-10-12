@@ -134,6 +134,8 @@ def main():
     """
     Main function.
     """
+    initialize_notification_system("Ticketmaster Order Status")
+
     import optparse
     p = optparse.OptionParser()
 
@@ -149,10 +151,7 @@ def main():
     if not options.email or not options.password or not options.order_ids:
         p.print_help()
     else:
-        # Parse the order ids
         order_ids = map(lambda s: s.strip(), options.order_ids.split(','))
-
-        initialize_notification_system("Ticketmaster Order Status")
         check_orders(options.email, options.password, order_ids)
 
 
