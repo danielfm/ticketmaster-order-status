@@ -45,6 +45,7 @@ _LOGIN_URI = '%s/shwLogin.cfm' % _BASE_URL
 _ORDER_URI = '%s/shwCompraDetalhe.cfm?pedidoID=%%s' % _BASE_URL
 
 # Notification icons (based on GTK stock items)
+# http://library.gnome.org/devel/gtk/stable/gtk-Stock-Items.html
 _ICON_ERROR    = 'gtk-dialog-error'
 _ICON_NEW      = 'gtk-add'
 _ICON_WAITING  = 'gtk-refresh'
