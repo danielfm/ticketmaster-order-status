@@ -44,41 +44,40 @@ _BASE_URL = 'https://ticketing.ticketmaster.com.br'
 _LOGIN_URI = '%s/shwLogin.cfm' % _BASE_URL
 _ORDER_URI = '%s/shwCompraDetalhe.cfm?pedidoID=%%s' % _BASE_URL
 
-# Order list link
-_ORDERS_LINK = '<a href="%s">More...</a>' % _LOGIN_URI
-
-# Notification priorities
-_PRIORITY_LOW      = pynotify.URGENCY_LOW
-_PRIORITY_NORMAL   = pynotify.URGENCY_NORMAL
-_PRIORITY_CRITICAL = pynotify.URGENCY_CRITICAL
+# Notification icons (based on GTK stock items)
+_ICON_ERROR    = 'gtk-dialog-error'
+_ICON_NEW      = 'gtk-add'
+_ICON_WAITING  = 'gtk-refresh'
+_ICON_BILLED   = 'gtk-dialog-info'
+_ICON_REJECTED = 'gtk-stop'
 
 # Notification messages to display according to the orders status
-_NOTIFICATION_TITLE = 'Ticketmaster Order %s'
+_TITLE = 'Ticketmaster Order %s'
 _STATUS_CODES = {
-    'Livre'      : ('Not processed yet'      , _PRIORITY_LOW),
-    'StdReserva' : ('Reserving your tickets' , _PRIORITY_NORMAL),
-    'StdCobranca': ('Charging your tickets'  , _PRIORITY_NORMAL),
-    'VendaOk'    : ('Billed'                 , _PRIORITY_CRITICAL),
-    'Recusada'   : ('Rejected'               , _PRIORITY_CRITICAL)
+    'Livre'      : ('Not processed yet.'     , _ICON_NEW),
+    'StdReserva' : ('Reserving your tickets.', _ICON_WAITING),
+    'StdCobranca': ('Charging your tickets.' , _ICON_WAITING),
+    'VendaOk'    : ('Billed.'                , _ICON_BILLED),
+    'Recusada'   : ('Rejected.'              , _ICON_REJECTED),
 }
 
 
 def initialize_notification_system(app_title):
     """
-    Initializes the notification machinery.
+    Initializes the notification machinery. Change this if you want to use
+    another notification system.
     """
     if not pynotify.init(app_title):
         import sys
         sys.exit(1)
 
 
-def display_message(title, message, priority=_PRIORITY_CRITICAL):
+def display_message(title, message, icon=_ICON_ERROR):
     """
-    Displays a message on the user's desktop using libnotify-python.
+    Displays a message on the user's desktop using libnotify-python. Change
+    this if you want to use another notification system.
     """
-    message = pynotify.Notification(title, message)
-    message.set_urgency(priority)
-    message.show()
+    pynotify.Notification(title, message, icon).show()
 
 
 def check_orders(email, password, order_ids):
@@ -92,10 +91,9 @@ def check_orders(email, password, order_ids):
             for order_id in order_ids:
                 show_order_status(opener, order_id)
         except:
-            title = _NOTIFICATION_TITLE % order_id
-            display_message(title, 'Cannot check status')
+            display_message(_TITLE % order_id, 'Cannot check status.')
     except:
-        display_message('Ticketmaster', 'Login failed')
+        display_message('Ticketmaster', 'Login failed.')
 
 
 def login(opener, email, password):
@@ -122,12 +120,10 @@ def show_order_status(opener, order_id):
     # Search for the order status codes
     for key, value in _STATUS_CODES.items():
         if content.find(key) >= 0:
-            title = _NOTIFICATION_TITLE % order_id
-            message = '%s. %s' % (value[0], _ORDERS_LINK)
-            display_message(title, message, value[1])
+            display_message(_TITLE % order_id, value[0], value[1])
             break
     else:
-        display_message(_NOTIFICATION_TITLE % order_id, 'Status not found')
+        display_message(_TITLE % order_id, 'Status not found.')
 
 
 def main():
@@ -140,11 +136,11 @@ def main():
     p = optparse.OptionParser()
 
     # Required command line options
-    p.add_option('--email'    , '-e', \
+    p.add_option('--email'    , '-e',
         help='E-mail address used in your Ticketmaster credentials.')
-    p.add_option('--password' , '-p', \
+    p.add_option('--password' , '-p',
         help='Password used in your Ticketmaster credentials.')
-    p.add_option('--order-ids', '-o', \
+    p.add_option('--order-ids', '-o',
         help='Order IDs to be checked, separated by collons.')
 
     options = p.parse_args()[0]
