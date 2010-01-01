@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #-*- coding:utf-8 -*-
 
-# Copyright (c) 2009, Daniel Fernandes Martins
+# Copyright (c) 2009-2010, Daniel Fernandes Martins
 # All rights reserved.
 #
 # Redistribution and use of this software in source and binary forms, with or
